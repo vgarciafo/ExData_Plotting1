@@ -1,0 +1,18 @@
+data <- read.csv(file="household_power_consumption.txt", sep=";",na.strings = "?")
+data <- data[data$Date=='1/2/2007' | data$Date=='2/2/2007',]
+data$timestamp <- strptime(paste(data[,1],data[,2],sep=" "), "%d/%m/%Y %H:%M:%S")
+par(mfrow = c(2, 2), mar = c(4, 4, 2, 1), oma = c(0, 0, 2, 0))
+plot(data$timestamp, data$Global_active_power, type="n", main="", xlab="", ylab="Global active power")
+lines(data$timestamp, data$Global_active_power, type="l") 
+plot(data$timestamp, data$Voltage, type="n", main="", xlab="datetime", ylab="Voltage")
+lines(data$timestamp, data$Voltage, type="l") 
+with(data,plot(timestamp,Sub_metering_1,type="n", main="", xlab="", ylab="Energy sub metering",mar = c(4, 4, 2, 1)))
+with(data,lines(timestamp,Sub_metering_1, type="l",col="black"))
+with(data,lines(timestamp,Sub_metering_2, type="l",col="red"))
+with(data,lines(timestamp,Sub_metering_3, type="l",col="blue"))
+legend("topright", bty = "n",pch = 1, col = c("black","red", "blue"), legend = c("Sub_metering_1", "Sub_metering_2","Sub_metering_3"))
+plot(data$timestamp, data$Global_reactive_power, type="n", main="", xlab="datetime", ylab="Global_reactive_power")
+lines(data$timestamp, data$Global_reactive_power, type="l") 
+dev.copy(png, file = "plot4.png",width=480,height=480)
+dev.off()
+
